@@ -1,0 +1,184 @@
+mysql> source C:\Users\jorge\classes\CSF031A\jorgepont_assignment1.sql
+--------------
+/*  Assignment1.sql 
+    JORGE PONT
+    CS 31A, Fall 2023 */
+ 
+
+--
+-- Current Database: `world`
+--
+
+DROP DATABASE IF EXISTS world
+--------------
+
+Query OK, 1 row affected (0.06 sec)
+
+--------------
+CREATE DATABASE world
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+Database changed
+--------------
+--
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+-- Table structure for table `city`
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+--
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS `city`
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+CREATE TABLE city (
+  ID int NOT NULL,
+  Name char(35) NOT NULL DEFAULT '',
+  CountryCode char(3) NOT NULL DEFAULT '',
+  District char(20) NOT NULL DEFAULT '',
+  Population int NOT NULL DEFAULT '0',
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+--
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+-- Dumping data for table `city`
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+--
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+-- ORDER BY:  `ID`
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (1,'Kabul','AFG','Kabol',1780000)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (2,'Qandahar','AFG','Qandahar',237500)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (3,'Herat','AFG','Herat',186800)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (4,'Mazar-e-Sharif','AFG','Balkh',127800)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (5,'Amsterdam','NLD','Noord-Holland',731200)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (6,'Rotterdam','NLD','Zuid-Holland',593321)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (7,'Haag','NLD','Zuid-Holland',440900)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (8,'Utrecht','NLD','Utrecht',234323)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (9,'Eindhoven','NLD','Noord-Brabant',201843)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO city VALUES (10,'Tilburg','NLD','Noord-Brabant',193238)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+/* Query 3 */
+
+DESCRIBE city
+--------------
+
++-------------+----------+------+-----+---------+-------+
+| Field       | Type     | Null | Key | Default | Extra |
++-------------+----------+------+-----+---------+-------+
+| ID          | int      | NO   | PRI | NULL    |       |
+| Name        | char(35) | NO   |     |         |       |
+| CountryCode | char(3)  | NO   |     |         |       |
+| District    | char(20) | NO   |     |         |       |
+| Population  | int      | NO   |     | 0       |       |
++-------------+----------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+--------------
+/* Query 4 */
+
+SELECT * FROM city
+--------------
+
++----+----------------+-------------+---------------+------------+
+| ID | Name           | CountryCode | District      | Population |
++----+----------------+-------------+---------------+------------+
+|  1 | Kabul          | AFG         | Kabol         |    1780000 |
+|  2 | Qandahar       | AFG         | Qandahar      |     237500 |
+|  3 | Herat          | AFG         | Herat         |     186800 |
+|  4 | Mazar-e-Sharif | AFG         | Balkh         |     127800 |
+|  5 | Amsterdam      | NLD         | Noord-Holland |     731200 |
+|  6 | Rotterdam      | NLD         | Zuid-Holland  |     593321 |
+|  7 | Haag           | NLD         | Zuid-Holland  |     440900 |
+|  8 | Utrecht        | NLD         | Utrecht       |     234323 |
+|  9 | Eindhoven      | NLD         | Noord-Brabant |     201843 |
+| 10 | Tilburg        | NLD         | Noord-Brabant |     193238 |
++----+----------------+-------------+---------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> notee

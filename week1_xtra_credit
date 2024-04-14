@@ -1,0 +1,27 @@
+Company I picked: jetpens, an online retailer of pens and stationery (www.jetpens.com)
+
+What kind of data might this company collect? 
+- customer data: name, shipping address, payment information, order history
+- Item data: description, price, item pictures
+- Item customer reviews: for each review-- stars and comments
+- Inventory: Item inventory level (ie 100 units)
+- Order data: orders placed by customers including item and qty fro that item
+
+Would it be company-generated (such as product information) or user-generated (such as reviews)? Most companies will have a combination of the two. 
+It would be a combination of both. Item related data is company generated, and customer related data is user generated.
+
+Why might this company use a database?
+To be able to manage the complex information flows involved in presenting merchandise data to the customer and transacting on it you need the data organized in a scalable, updatable, and secure manner. Also the data needs to be able to handle concurrent transactions and manage system failures without affecting transactions. Databases offer the best technology to achieve these objectives.
+
+What are some simple table names this company might use? Name at least three. 
+Choose two of the tables you named and list some of the columns they might have. 
+
+- Item master: item_id, decription, pictures
+- Inventory master: item_id, inventory (units)
+- Customer master: customer_id, fist, last, various address fields
+- Price list: item, price, date_valid
+- Customer order history: customer_id, order_number
+- Order history: order-number, date, customer_id, (item_id, qty, price) --> this repeats if more than one item are included in the order
+
+Would any of these columns appear in more than one table?
+Yes, as an example, the customer_id will appear in the customer master table and also in both the customer order history and the order history as there needs to be an association between an order and the customer placing the order.
