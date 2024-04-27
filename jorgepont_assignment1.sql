@@ -1,5 +1,5 @@
 /*  Assignment1.sql 
-    YOUR FULL NAME HERE
+    JORGE PONT
     CS 31A, Fall 2023 */
  
 
