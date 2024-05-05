@@ -2,10 +2,7 @@
     JORGE PONT
     CS 31A, Fall 2023 */
  
-
---
 -- Current Database: `world`
---
 
 DROP DATABASE IF EXISTS world;
 
@@ -13,9 +10,7 @@ CREATE DATABASE world;
 
 USE world;
 
---
 -- Table structure for table `city`
---
 
 DROP TABLE IF EXISTS `city`;
 
