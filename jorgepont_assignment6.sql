@@ -21,7 +21,9 @@ Write a SELECT statement that finds the average salary for Mega Store (MS) emplo
 whose manager ID is 100. 
 */
 
-
+SELECT AVG(salary)
+FROM employees
+WHERE manager_id = 100;
 
 /* Question 2
 Display the lowest salary, the most recent hire date, the last name who is first 
@@ -29,7 +31,9 @@ in an alphabetical list of employees, and the last name who is last of an alphab
 of employees. Select only employees who are in departments 30 or 60. 
 */
 
-
+SELECT MIN(salary), MAX(hire_date), MIN(last_name), MAX(last_name)
+FROM employees
+WHERE dept_id = 30 OR dept_id = 60; 
 
 /* Question 3
 Create a list including each employee's first name concatenated to a space 
@@ -37,6 +41,9 @@ and the employee's last name, and the salary of all employees where the last nam
 contains the string 'ar'. 
 */
 
+SELECT CONCAT(first_name, " ", last_name), salary
+FROM employees
+WHERE last_name LIKE '%ar%';
 
 
 /* Question 4
@@ -44,13 +51,17 @@ Display the last name who is first in an alphabetical list of employees in
 the employees table, and the last name who is last in that an alphabetical list. 
 */
 
-
+SELECT MIN(last_name), MAX(last_name) 
+FROM employees;
 
 /* Question 5
 Create a list of weekly salaries from the employees. The salaries should be 
 formatted to include a $-sign and have two decimal points like: $9999.99. 
 */
 
+SELECT emp_id, CONCAT('$', FORMAT(salary/52, 2)) AS 'Weekly Salary'
+FROM employees
+LIMIT 5;
 
 
 /* Question 6
@@ -58,6 +69,9 @@ Display the product ID and product description for all products.
 The product descriptions should appear in uppercase letters.
 */
 
+SELECT prod_id, UPPER(prod_desc)
+FROM products
+LIMIT 5;
 
 
 /* Question 7
@@ -65,15 +79,22 @@ Display the customer ID, first name, last name, and credit limit for all custome
 The credit limit should be rounded to the nearest dollar.
 */
 
-
+SELECT cust_id, first_name, last_name, FORMAT(credit_limit,0) AS 'credit_limit'
+FROM customers;
 
 /* Question 8
-The Mega Store is running a promotion that is valid for up to 20 days after an order is placed. 
-Write a SQL statement that lists the order ID, customer ID, first name, and last name. 
+The Mega Store is running a promotion that is valid for up to 20 days 
+after an order is placed. Write a SQL statement that lists 
+the order ID, customer ID, first name, and last name. 
 The promotion date is 20 days after the order was placed.
 */
 
-
+SELECT o.ord_id, c.cust_id, c.first_name, c.last_name, 
+	DATE_FORMAT(o.ord_date, '%Y-%m-%d') AS 'order date',
+	DATE_FORMAT(DATE_ADD(o.ord_date, INTERVAL 20 DAY), '%Y-%m-%d') AS 'promotion date' 
+FROM orders o 
+JOIN customers c
+	ON o.cust_id = c.cust_id;
 
 /* Question 9
 Display the product ID and the number of orders placed for each product. 
