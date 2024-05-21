@@ -1,0 +1,912 @@
+mysql> SOURCE C:/Users/jorge/classes/CSF031A/jorgepont_assignment5.sql
+--------------
+/* Assignment5.sql 
+Jorge Pont 
+CS 31A, Winter 2024
+*/
+
+/*
+start mySQL:
+mysql -u root -p --force --comments -vvv
+(somehow in Linux I have to use root)
+run this at the mysql prompt:
+SOURCE ~/jorge-files/Foothill-courses/csf031a/jorgepont_assignment5.sql
+*/
+
+SOURCE ~/jorge-files/Foothill-courses/csf031a/megastore_database_scripts/create_tables_mega_store.sql
+--------------
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SOURCE ~/jorge-files/Foothill-courses/csf031a/megastore_database_scripts/create_' at line 14
+ERROR: 
+Failed to open file '~\jorge-files\Foothill-courses\csf031a\megastore_database_scripts\insert_data_mega_store.sql', error: 2
+Database changed
+--------------
+/* Question 1
+For each order, write a SQL statement that displays the order ID 
+and order date along with the customer ID, first name, 
+and last name of the customer for which the order was created.
+*/
+
+SELECT o.ord_id, o.ord_date, o.cust_id, c.first_name, c.last_name
+FROM orders o  
+INNER JOIN customers c
+   ON o.cust_id = c.cust_id
+--------------
+
++--------+---------------------+---------+------------+-----------+
+| ord_id | ord_date            | cust_id | first_name | last_name |
++--------+---------------------+---------+------------+-----------+
+|    378 | 2014-06-14 00:00:00 |  400300 | Arnold     | McGold    |
+|    106 | 2013-10-01 00:00:00 |  401250 | Samuel     | Morse     |
+|    113 | 2013-11-08 00:00:00 |  401250 | Samuel     | Morse     |
+|    119 | 2013-11-28 00:00:00 |  401250 | Samuel     | Morse     |
+|    301 | 2014-06-04 00:00:00 |  401250 | Samuel     | Morse     |
+|    506 | 2014-01-12 00:00:00 |  401250 | Samuel     | Morse     |
+|    552 | 2014-08-12 00:00:00 |  401250 | Samuel     | Morse     |
+|    112 | 2013-11-08 00:00:00 |  401890 | William    | Northrep  |
+|    519 | 2014-04-04 00:00:00 |  401890 | William    | Northrep  |
+|    114 | 2013-11-08 00:00:00 |  402100 | William    | Morise    |
+|    115 | 2013-11-08 00:00:00 |  402100 | William    | Morise    |
+|    117 | 2013-11-28 00:00:00 |  402100 | William    | Morise    |
+|    105 | 2013-10-01 00:00:00 |  403000 | Sally      | Williams  |
+|    108 | 2013-10-02 00:00:00 |  403000 | Sally      | Williams  |
+|    109 | 2013-10-12 00:00:00 |  403000 | Sally      | Williams  |
+|    111 | 2013-11-01 00:00:00 |  403000 | Sally      | Williams  |
+|    390 | 2014-06-04 00:00:00 |  403000 | Sally      | Williams  |
+|    395 | 2014-06-04 00:00:00 |  403000 | Sally      | Williams  |
+|    412 | 2014-07-01 00:00:00 |  403000 | Sally      | Williams  |
+|    505 | 2014-01-12 00:00:00 |  403000 | Sally      | Williams  |
+|    508 | 2014-02-01 00:00:00 |  403000 | Sally      | Williams  |
+|    509 | 2014-02-12 00:00:00 |  403000 | Sally      | Williams  |
+|    511 | 2014-02-01 00:00:00 |  403000 | Sally      | Williams  |
+|    528 | 2014-05-01 00:00:00 |  403000 | Sally      | Williams  |
+|    529 | 2014-05-12 00:00:00 |  403000 | Sally      | Williams  |
+|    536 | 2014-05-12 00:00:00 |  403000 | Sally      | Williams  |
+|    608 | 2013-09-26 00:00:00 |  403000 | Sally      | Williams  |
+|    611 | 2013-09-30 00:00:00 |  403000 | Sally      | Williams  |
+|    808 | 2014-01-26 00:00:00 |  403000 | Sally      | Williams  |
+|    811 | 2014-01-31 00:00:00 |  403000 | Sally      | Williams  |
+|    118 | 2013-11-28 00:00:00 |  403010 | Elisha     | Otis      |
+|    107 | 2013-10-02 00:00:00 |  403050 | Alexis     | Hamilton  |
+|    227 | 2013-08-01 00:00:00 |  403050 | Alexis     | Hamilton  |
+|    507 | 2014-02-01 00:00:00 |  403050 | Alexis     | Hamilton  |
+|    527 | 2014-05-01 00:00:00 |  403050 | Alexis     | Hamilton  |
+|    400 | 2013-10-15 00:00:00 |  403100 | James      | Stevenson |
+|    401 | 2013-10-15 00:00:00 |  403100 | James      | Stevenson |
+|    402 | 2013-10-18 00:00:00 |  403100 | James      | Stevenson |
+|    407 | 2013-11-15 00:00:00 |  403100 | James      | Stevenson |
+|    302 | 2014-06-04 00:00:00 |  404000 | Frederick  | Olmsted   |
+|    303 | 2014-06-10 00:00:00 |  404100 | D. K.      | Button    |
+|    503 | 2014-01-04 00:00:00 |  404100 | D. K.      | Button    |
+|    504 | 2014-01-11 00:00:00 |  404100 | D. K.      | Button    |
+|    605 | 2013-09-05 00:00:00 |  404100 | D. K.      | Button    |
+|    805 | 2014-01-05 00:00:00 |  404100 | D. K.      | Button    |
+|    520 | 2014-04-04 00:00:00 |  404900 | Al         | Williams  |
+|    110 | 2013-10-12 00:00:00 |  404950 | William    | Morris    |
+|    408 | 2013-11-20 00:00:00 |  404950 | William    | Morris    |
+|    411 | 2014-07-01 00:00:00 |  404950 | William    | Morris    |
+|    510 | 2014-02-01 00:00:00 |  404950 | William    | Morris    |
+|    535 | 2014-05-12 00:00:00 |  404950 | William    | Morris    |
+|    540 | 2014-06-02 00:00:00 |  404950 | William    | Morris    |
+|    116 | 2013-11-12 00:00:00 |  405000 | David      | Day       |
+|    405 | 2013-11-19 00:00:00 |  408770 | Clem       | Clay      |
+|    128 | 2013-12-15 00:00:00 |  409030 | Barry      | Mazur     |
+|    130 | 2013-12-30 00:00:00 |  409030 | Barry      | Mazur     |
+|    324 | 2014-06-11 00:00:00 |  409030 | Barry      | Mazur     |
+|    122 | 2014-01-23 00:00:00 |  409150 | Joan       | Martin    |
+|    123 | 2013-12-05 00:00:00 |  409150 | Joan       | Martin    |
+|    218 | 2013-08-08 00:00:00 |  409150 | Joan       | Martin    |
+|    223 | 2013-08-05 00:00:00 |  409150 | Joan       | Martin    |
+|    413 | 2014-07-07 00:00:00 |  409150 | Joan       | Martin    |
+|    414 | 2014-07-20 00:00:00 |  409150 | Joan       | Martin    |
+|    415 | 2014-07-23 00:00:00 |  409150 | Joan       | Martin    |
+|    515 | 2014-02-02 00:00:00 |  409150 | Joan       | Martin    |
+|    516 | 2014-02-02 00:00:00 |  409150 | Joan       | Martin    |
+|    518 | 2014-02-03 00:00:00 |  409150 | Joan       | Martin    |
+|    522 | 2014-04-05 00:00:00 |  409150 | Joan       | Martin    |
+|    523 | 2014-04-05 00:00:00 |  409150 | Joan       | Martin    |
+|    715 | 2014-04-05 00:00:00 |  409150 | Joan       | Martin    |
+|    716 | 2014-02-06 00:00:00 |  409150 | Joan       | Martin    |
+|    718 | 2014-04-08 00:00:00 |  409150 | Joan       | Martin    |
+|    124 | 2013-12-07 00:00:00 |  409160 | Jane       | Martin    |
+|    125 | 2013-12-09 00:00:00 |  409160 | Jane       | Martin    |
+|    224 | 2013-08-07 00:00:00 |  409160 | Jane       | Martin    |
+|    225 | 2013-08-09 00:00:00 |  409160 | Jane       | Martin    |
+|    524 | 2014-04-07 00:00:00 |  409160 | Jane       | Martin    |
+|    525 | 2014-05-09 00:00:00 |  409160 | Jane       | Martin    |
+|    606 | 2013-09-07 00:00:00 |  409160 | Jane       | Martin    |
+|    607 | 2013-09-15 00:00:00 |  409160 | Jane       | Martin    |
+|    806 | 2014-01-07 00:00:00 |  409160 | Jane       | Martin    |
+|    807 | 2014-01-15 00:00:00 |  409160 | Jane       | Martin    |
+|    126 | 2013-12-15 00:00:00 |  409190 | NULL       | Prince    |
+|    307 | 2014-06-04 00:00:00 |  900300 | Arnold     | McGold    |
+|    609 | 2013-09-27 00:00:00 |  900300 | Arnold     | McGold    |
+|    809 | 2014-01-27 00:00:00 |  900300 | Arnold     | McGold    |
+|    120 | 2014-01-02 00:00:00 |  903000 | Arnold     | McGold    |
+|    121 | 2014-01-03 00:00:00 |  903000 | Arnold     | McGold    |
+|    306 | 2014-06-04 00:00:00 |  903000 | Arnold     | McGold    |
+|    312 | 2014-06-07 00:00:00 |  903000 | Arnold     | McGold    |
+|    313 | 2014-06-07 00:00:00 |  903000 | Arnold     | McGold    |
+|    550 | 2014-08-02 00:00:00 |  903000 | Arnold     | McGold    |
+|    551 | 2014-08-03 00:00:00 |  903000 | Arnold     | McGold    |
+|    610 | 2013-09-27 00:00:00 |  903000 | Arnold     | McGold    |
+|    810 | 2014-01-27 00:00:00 |  903000 | Arnold     | McGold    |
+|    127 | 2013-12-15 00:00:00 |  915001 | Abigail    | Adams     |
+|    129 | 2013-12-15 00:00:00 |  915001 | Abigail    | Adams     |
++--------+---------------------+---------+------------+-----------+
+97 rows in set (0.00 sec)
+
+--------------
+/* Question 2
+For each order placed on 04/04/2014, write a SQL statement that lists 
+the order ID, customer ID, first name, and last name of the customer 
+for which the order was created.
+*/
+
+
+SELECT o.ord_id, o.cust_id, c.first_name, c.last_name
+FROM orders o 
+INNER JOIN customers c
+   ON o.cust_id = c.cust_id
+WHERE o.ord_date = "2014/04/04"
+--------------
+
++--------+---------+------------+-----------+
+| ord_id | cust_id | first_name | last_name |
++--------+---------+------------+-----------+
+|    519 |  401890 | William    | Northrep  |
+|    520 |  404900 | Al         | Williams  |
++--------+---------+------------+-----------+
+2 rows in set, 1 warning (0.00 sec)
+
+--------------
+/* Question 3
+Display the customer ID, first name, and last name 
+of each customer for which an order was NOT created on 04/04/2014.
+*/
+
+SELECT o.cust_id, c.first_name, c.last_name
+FROM orders o  INNER JOIN customers c
+   ON o.cust_id = c.cust_id
+WHERE o.ord_date != "2014/04/04"
+--------------
+
++---------+------------+-----------+
+| cust_id | first_name | last_name |
++---------+------------+-----------+
+|  403000 | Sally      | Williams  |
+|  401250 | Samuel     | Morse     |
+|  403050 | Alexis     | Hamilton  |
+|  403000 | Sally      | Williams  |
+|  403000 | Sally      | Williams  |
+|  404950 | William    | Morris    |
+|  403000 | Sally      | Williams  |
+|  401890 | William    | Northrep  |
+|  401250 | Samuel     | Morse     |
+|  402100 | William    | Morise    |
+|  402100 | William    | Morise    |
+|  405000 | David      | Day       |
+|  402100 | William    | Morise    |
+|  403010 | Elisha     | Otis      |
+|  401250 | Samuel     | Morse     |
+|  903000 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409160 | Jane       | Martin    |
+|  409160 | Jane       | Martin    |
+|  409190 | NULL       | Prince    |
+|  915001 | Abigail    | Adams     |
+|  409030 | Barry      | Mazur     |
+|  915001 | Abigail    | Adams     |
+|  409030 | Barry      | Mazur     |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409160 | Jane       | Martin    |
+|  409160 | Jane       | Martin    |
+|  403050 | Alexis     | Hamilton  |
+|  401250 | Samuel     | Morse     |
+|  404000 | Frederick  | Olmsted   |
+|  404100 | D. K.      | Button    |
+|  903000 | Arnold     | McGold    |
+|  900300 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  409030 | Barry      | Mazur     |
+|  400300 | Arnold     | McGold    |
+|  403000 | Sally      | Williams  |
+|  403000 | Sally      | Williams  |
+|  403100 | James      | Stevenson |
+|  403100 | James      | Stevenson |
+|  403100 | James      | Stevenson |
+|  408770 | Clem       | Clay      |
+|  403100 | James      | Stevenson |
+|  404950 | William    | Morris    |
+|  404950 | William    | Morris    |
+|  403000 | Sally      | Williams  |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  404100 | D. K.      | Button    |
+|  404100 | D. K.      | Button    |
+|  403000 | Sally      | Williams  |
+|  401250 | Samuel     | Morse     |
+|  403050 | Alexis     | Hamilton  |
+|  403000 | Sally      | Williams  |
+|  403000 | Sally      | Williams  |
+|  404950 | William    | Morris    |
+|  403000 | Sally      | Williams  |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409160 | Jane       | Martin    |
+|  409160 | Jane       | Martin    |
+|  403050 | Alexis     | Hamilton  |
+|  403000 | Sally      | Williams  |
+|  403000 | Sally      | Williams  |
+|  404950 | William    | Morris    |
+|  403000 | Sally      | Williams  |
+|  404950 | William    | Morris    |
+|  903000 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  401250 | Samuel     | Morse     |
+|  404100 | D. K.      | Button    |
+|  409160 | Jane       | Martin    |
+|  409160 | Jane       | Martin    |
+|  403000 | Sally      | Williams  |
+|  900300 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  403000 | Sally      | Williams  |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  409150 | Joan       | Martin    |
+|  404100 | D. K.      | Button    |
+|  409160 | Jane       | Martin    |
+|  409160 | Jane       | Martin    |
+|  403000 | Sally      | Williams  |
+|  900300 | Arnold     | McGold    |
+|  903000 | Arnold     | McGold    |
+|  403000 | Sally      | Williams  |
++---------+------------+-----------+
+95 rows in set, 1 warning (0.00 sec)
+
+--------------
+/* Question 4 For each order, write a SQL statement that lists the product ID,
+   order date, order ID, product description, and category for each product
+   that make up the order. 
+   Order the rows by category and then by order ID.
+   Display the order ID, order date, product ID, product description, and
+   category ID.
+*/
+
+SELECT o.ord_id, o.ord_date, p.prod_id, p.prod_desc, p.catg_id
+FROM orders o  
+INNER JOIN order_details od
+ON o.ord_id = od.ord_id
+INNER JOIN products p
+ON od.prod_id = p.prod_id
+ORDER BY p.catg_id, o.ord_id
+--------------
+
++--------+---------------------+---------+------------------------------------------------+---------+
+| ord_id | ord_date            | prod_id | prod_desc                                      | catg_id |
++--------+---------------------+---------+------------------------------------------------+---------+
+|    109 | 2013-10-12 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    110 | 2013-10-12 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    114 | 2013-11-08 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    115 | 2013-11-08 00:00:00 |    1120 | Full-sized Washer                              | APL     |
+|    118 | 2013-11-28 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    130 | 2013-12-30 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    130 | 2013-12-30 00:00:00 |    1120 | Full-sized Washer                              | APL     |
+|    218 | 2013-08-08 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    223 | 2013-08-05 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    306 | 2014-06-04 00:00:00 |    1120 | Full-sized Washer                              | APL     |
+|    306 | 2014-06-04 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    307 | 2014-06-04 00:00:00 |    1120 | Full-sized Washer                              | APL     |
+|    307 | 2014-06-04 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    378 | 2014-06-14 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    378 | 2014-06-14 00:00:00 |    1120 | Full-sized Washer                              | APL     |
+|    412 | 2014-07-01 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    415 | 2014-07-23 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    503 | 2014-01-04 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    504 | 2014-01-11 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    509 | 2014-02-12 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    511 | 2014-02-01 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    518 | 2014-02-03 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    523 | 2014-04-05 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    529 | 2014-05-12 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    605 | 2013-09-05 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    718 | 2014-04-08 00:00:00 |    1125 | Low Energy Dryer                               | APL     |
+|    805 | 2014-01-05 00:00:00 |    1130 | Mini freezer, sized for the office             | APL     |
+|    400 | 2013-10-15 00:00:00 |    5002 | 16 oz Jacketed Graphite Ball-peen hammer       | HD      |
+|    400 | 2013-10-15 00:00:00 |    5004 | 10 oz Steel Head Dead Blow hammer              | HD      |
+|    400 | 2013-10-15 00:00:00 |    5005 | Steel Shingler hammerhammer                    | HD      |
+|    400 | 2013-10-15 00:00:00 |    5008 | 22 oz Graphite checkered face framing hammer   | HD      |
+|    401 | 2013-10-15 00:00:00 |    5002 | 16 oz Jacketed Graphite Ball-peen hammer       | HD      |
+|    402 | 2013-10-18 00:00:00 |    5002 | 16 oz Jacketed Graphite Ball-peen hammer       | HD      |
+|    407 | 2013-11-15 00:00:00 |    5005 | Steel Shingler hammerhammer                    | HD      |
+|    407 | 2013-11-15 00:00:00 |    5005 | Steel Shingler hammerhammer                    | HD      |
+|    407 | 2013-11-15 00:00:00 |    5008 | 22 oz Graphite checkered face framing hammer   | HD      |
+|    107 | 2013-10-02 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    108 | 2013-10-02 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    110 | 2013-10-12 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    112 | 2013-11-08 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    113 | 2013-11-08 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    115 | 2013-11-08 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    115 | 2013-11-08 00:00:00 |    1000 | Seven speed BnD hand mixer, black              | HW      |
+|    115 | 2013-11-08 00:00:00 |    1100 | Twelve-speed Blender                           | HW      |
+|    119 | 2013-11-28 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    122 | 2014-01-23 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    122 | 2014-01-23 00:00:00 |    1072 | Steam and dry iron SunShine, Red               | HW      |
+|    122 | 2014-01-23 00:00:00 |    1071 | Steam and dry iron SunShine, Blue              | HW      |
+|    122 | 2014-01-23 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    126 | 2013-12-15 00:00:00 |    1100 | Twelve-speed Blender                           | HW      |
+|    127 | 2013-12-15 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    127 | 2013-12-15 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    127 | 2013-12-15 00:00:00 |    1100 | Twelve-speed Blender                           | HW      |
+|    130 | 2013-12-30 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    224 | 2013-08-07 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    224 | 2013-08-07 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    301 | 2014-06-04 00:00:00 |    1100 | Twelve-speed Blender                           | HW      |
+|    303 | 2014-06-10 00:00:00 |    1000 | Seven speed BnD hand mixer, black              | HW      |
+|    313 | 2014-06-07 00:00:00 |    1000 | Seven speed BnD hand mixer, black              | HW      |
+|    408 | 2013-11-20 00:00:00 |    1071 | Steam and dry iron SunShine, Blue              | HW      |
+|    411 | 2014-07-01 00:00:00 |    1071 | Steam and dry iron SunShine, Blue              | HW      |
+|    411 | 2014-07-01 00:00:00 |    1072 | Steam and dry iron SunShine, Red               | HW      |
+|    413 | 2014-07-07 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    505 | 2014-01-12 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    505 | 2014-01-12 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    507 | 2014-02-01 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    509 | 2014-02-12 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    510 | 2014-02-01 00:00:00 |    1071 | Steam and dry iron SunShine, Blue              | HW      |
+|    510 | 2014-02-01 00:00:00 |    1072 | Steam and dry iron SunShine, Red               | HW      |
+|    515 | 2014-02-02 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    519 | 2014-04-04 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    522 | 2014-04-05 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    524 | 2014-04-07 00:00:00 |    1090 | Gas grill                                      | HW      |
+|    524 | 2014-04-07 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    528 | 2014-05-01 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    540 | 2014-06-02 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    540 | 2014-06-02 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    605 | 2013-09-05 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    605 | 2013-09-05 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    607 | 2013-09-15 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    608 | 2013-09-26 00:00:00 |    1000 | Seven speed BnD hand mixer, black              | HW      |
+|    609 | 2013-09-27 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    611 | 2013-09-30 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    715 | 2014-04-05 00:00:00 |    1110 | Electric Pancake griddle                       | HW      |
+|    805 | 2014-01-05 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    807 | 2014-01-15 00:00:00 |    1070 | Steam and dry iron SunShine, Yellow            | HW      |
+|    808 | 2014-01-26 00:00:00 |    1000 | Seven speed BnD hand mixer, black              | HW      |
+|    809 | 2014-01-27 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    811 | 2014-01-31 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    811 | 2014-01-31 00:00:00 |    1080 | Cornpopper 12 quart automatic shutoff          | HW      |
+|    218 | 2013-08-08 00:00:00 |    2746 | Charles Mingus - Blues & Politics              | MUS     |
+|    218 | 2013-08-08 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    225 | 2013-08-09 00:00:00 |    2412 | David Newman - Davey Blue                      | MUS     |
+|    225 | 2013-08-09 00:00:00 |    2947 | Ornette Coleman - Sound Grammer                | MUS     |
+|    413 | 2014-07-07 00:00:00 |    2984 | John Coltrane - Lush Life                      | MUS     |
+|    413 | 2014-07-07 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    518 | 2014-02-03 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    518 | 2014-02-03 00:00:00 |    2984 | John Coltrane - Lush Life                      | MUS     |
+|    520 | 2014-04-04 00:00:00 |    2747 | Charles Mingus - Blues & Roots                 | MUS     |
+|    525 | 2014-05-09 00:00:00 |    2412 | David Newman - Davey Blue                      | MUS     |
+|    525 | 2014-05-09 00:00:00 |    2746 | Charles Mingus - Blues & Politics              | MUS     |
+|    525 | 2014-05-09 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    525 | 2014-05-09 00:00:00 |    2947 | Ornette Coleman - Sound Grammer                | MUS     |
+|    552 | 2014-08-12 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    552 | 2014-08-12 00:00:00 |    2984 | John Coltrane - Lush Life                      | MUS     |
+|    715 | 2014-04-05 00:00:00 |    2014 | Bix Beiderbecke - Tiger Rag                    | MUS     |
+|    715 | 2014-04-05 00:00:00 |    2984 | John Coltrane - Lush Life                      | MUS     |
+|    111 | 2013-11-01 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    111 | 2013-11-01 00:00:00 |    1150 | Cat exerciser                                  | PET     |
+|    117 | 2013-11-28 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    117 | 2013-11-28 00:00:00 |    1150 | Cat exerciser                                  | PET     |
+|    124 | 2013-12-07 00:00:00 |    1151 | Cat pillow, removable cloth cover              | PET     |
+|    125 | 2013-12-09 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    129 | 2013-12-15 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    218 | 2013-08-08 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    223 | 2013-08-05 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    223 | 2013-08-05 00:00:00 |    1150 | Cat exerciser                                  | PET     |
+|    227 | 2013-08-01 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    227 | 2013-08-01 00:00:00 |    1150 | Cat exerciser                                  | PET     |
+|    302 | 2014-06-04 00:00:00 |    1140 | Bird cage- simple; wire frame two feeder trays | PET     |
+|    324 | 2014-06-11 00:00:00 |    4576 | Primo brand of catnip for your favorite cat    | PET     |
+|    401 | 2013-10-15 00:00:00 |    4577 | Leather cat leash with harness                 | PET     |
+|    402 | 2013-10-18 00:00:00 |    4577 | Leather cat leash with harness                 | PET     |
+|    415 | 2014-07-23 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    508 | 2014-02-01 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    508 | 2014-02-01 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    518 | 2014-02-03 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    527 | 2014-05-01 00:00:00 |    1150 | Cat exerciser                                  | PET     |
+|    527 | 2014-05-01 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    540 | 2014-06-02 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    606 | 2013-09-07 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    610 | 2013-09-27 00:00:00 |    4577 | Leather cat leash with harness                 | PET     |
+|    718 | 2014-04-08 00:00:00 |    1141 | Bird cage- deluxe;floor model, with fly space  | PET     |
+|    806 | 2014-01-07 00:00:00 |    1152 | Cat pillow, removable leather cover            | PET     |
+|    810 | 2014-01-27 00:00:00 |    4577 | Leather cat leash with harness                 | PET     |
+|    105 | 2013-10-01 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    105 | 2013-10-01 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    105 | 2013-10-01 00:00:00 |    1030 | Basketball                                     | SPG     |
+|    106 | 2013-10-01 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    117 | 2013-11-28 00:00:00 |    1030 | Basketball                                     | SPG     |
+|    120 | 2014-01-02 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    121 | 2014-01-03 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    121 | 2014-01-03 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    128 | 2013-12-15 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    302 | 2014-06-04 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    312 | 2014-06-07 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    312 | 2014-06-07 00:00:00 |    1050 | Deluxe Stationary bike                         | SPG     |
+|    312 | 2014-06-07 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    312 | 2014-06-07 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    390 | 2014-06-04 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    395 | 2014-06-04 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1050 | Deluxe Stationary bike                         | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    405 | 2013-11-19 00:00:00 |    1030 | Basketball                                     | SPG     |
+|    411 | 2014-07-01 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    414 | 2014-07-20 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    505 | 2014-01-12 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    511 | 2014-02-01 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    516 | 2014-02-02 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    519 | 2014-04-04 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    520 | 2014-04-04 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    528 | 2014-05-01 00:00:00 |    1030 | Basketball                                     | SPG     |
+|    528 | 2014-05-01 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    529 | 2014-05-12 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    535 | 2014-05-12 00:00:00 |    1050 | Deluxe Stationary bike                         | SPG     |
+|    535 | 2014-05-12 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    536 | 2014-05-12 00:00:00 |    1050 | Deluxe Stationary bike                         | SPG     |
+|    536 | 2014-05-12 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    550 | 2014-08-02 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    550 | 2014-08-02 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    551 | 2014-08-03 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    605 | 2013-09-05 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    605 | 2013-09-05 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    605 | 2013-09-05 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    608 | 2013-09-26 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    609 | 2013-09-27 00:00:00 |    1040 | Super Flyer Treadmill                          | SPG     |
+|    609 | 2013-09-27 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
+|    716 | 2014-02-06 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    805 | 2014-01-05 00:00:00 |    1060 | Deluxe Mountain bike                           | SPG     |
+|    808 | 2014-01-26 00:00:00 |    1020 | Cork-backed dartboard with hanger              | SPG     |
+|    808 | 2014-01-26 00:00:00 |    1010 | Set of 12 barbells 15 pounds                   | SPG     |
++--------+---------------------+---------+------------------------------------------------+---------+
+184 rows in set (0.00 sec)
+
+--------------
+/* Question 5
+Display the order ID, order date, customer first name, and customer last name 
+for each order that was created for Samuel Morse but does not contain 
+the item description “Electric Pancake griddle”.
+*/
+
+SELECT o.ord_id, o.ord_date, c.first_name, c.last_name
+FROM orders o
+INNER JOIN customers c
+ON o.cust_id = c.cust_id
+INNER JOIN order_details od
+ON o.ord_id = od.ord_id
+INNER JOIN products p
+ON od.prod_id = p.prod_id
+WHERE c.first_name = 'Samuel' AND c.last_name = 'Morse' AND
+p.prod_name != 'Electric Pancake griddle'
+--------------
+
++--------+---------------------+------------+-----------+
+| ord_id | ord_date            | first_name | last_name |
++--------+---------------------+------------+-----------+
+|    106 | 2013-10-01 00:00:00 | Samuel     | Morse     |
+|    113 | 2013-11-08 00:00:00 | Samuel     | Morse     |
+|    119 | 2013-11-28 00:00:00 | Samuel     | Morse     |
+|    301 | 2014-06-04 00:00:00 | Samuel     | Morse     |
+|    552 | 2014-08-12 00:00:00 | Samuel     | Morse     |
+|    552 | 2014-08-12 00:00:00 | Samuel     | Morse     |
++--------+---------------------+------------+-----------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Question 6
+Display the order ID, customer ID, customer last name, all products ID in each order, 
+and product names. Display the first 10 rows in the result set.
+Display the customer ID, customer last name, order ID,  products ID in each order, 
+and product names.
+*/
+
+SELECT  c.cust_id, c.last_name, o.ord_id, od.prod_id, p.prod_name
+FROM orders o
+INNER JOIN customers c
+ON o.cust_id = c.cust_id
+INNER JOIN order_details od
+ON o.ord_id = od.ord_id
+INNER JOIN products p
+ON od.prod_id = p.prod_id
+LIMIT 10
+--------------
+
++---------+-----------+--------+---------+-----------------+
+| cust_id | last_name | ord_id | prod_id | prod_name       |
++---------+-----------+--------+---------+-----------------+
+|  400300 | McGold    |    378 |    1120 | Washer          |
+|  400300 | McGold    |    378 |    1125 | Dryer           |
+|  401250 | Morse     |    106 |    1060 | Mountain bike   |
+|  401250 | Morse     |    113 |    1080 | Cornpopper      |
+|  401250 | Morse     |    119 |    1070 | Iron            |
+|  401250 | Morse     |    301 |    1100 | Blender         |
+|  401250 | Morse     |    552 |    2984 | B000000Y7L      |
+|  401250 | Morse     |    552 |    2014 | B000005INR      |
+|  401890 | Northrep  |    112 |    1110 | Pancake griddle |
+|  401890 | Northrep  |    519 |    1020 | Dartboard       |
++---------+-----------+--------+---------+-----------------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Question 7
+Display the order ID, customer ID, customer last name, all products ID in each order, 
+and product names. Display only the products in the ‘MUS’ category.
+*/
+
+SELECT  o.ord_id, c.cust_id, c.last_name, od.prod_id, p.prod_name
+FROM orders o
+INNER JOIN customers c
+ON o.cust_id = c.cust_id
+INNER JOIN order_details od
+ON o.ord_id = od.ord_id
+INNER JOIN products p
+ON od.prod_id = p.prod_id
+WHERE p.catg_id = 'MUS'
+--------------
+
++--------+---------+-----------+---------+------------+
+| ord_id | cust_id | last_name | prod_id | prod_name  |
++--------+---------+-----------+---------+------------+
+|    218 |  409150 | Martin    |    2014 | B000005INR |
+|    413 |  409150 | Martin    |    2014 | B000005INR |
+|    518 |  409150 | Martin    |    2014 | B000005INR |
+|    525 |  409160 | Martin    |    2014 | B000005INR |
+|    552 |  401250 | Morse     |    2014 | B000005INR |
+|    715 |  409150 | Martin    |    2014 | B000005INR |
+|    225 |  409160 | Martin    |    2412 | B00005UF3I |
+|    525 |  409160 | Martin    |    2412 | B00005UF3I |
+|    218 |  409150 | Martin    |    2746 | B00000JWCM |
+|    525 |  409160 | Martin    |    2746 | B00000JWCM |
+|    520 |  404900 | Williams  |    2747 | B000002I4Q |
+|    225 |  409160 | Martin    |    2947 | B000GFRE76 |
+|    525 |  409160 | Martin    |    2947 | B000GFRE76 |
+|    413 |  409150 | Martin    |    2984 | B000000Y7L |
+|    518 |  409150 | Martin    |    2984 | B000000Y7L |
+|    552 |  401250 | Morse     |    2984 | B000000Y7L |
+|    715 |  409150 | Martin    |    2984 | B000000Y7L |
++--------+---------+-----------+---------+------------+
+17 rows in set (0.00 sec)
+
+--------------
+/* Question 8
+Display the rating for customers. Display the customer ID, credit limit, and rating of the customer.
+*/
+
+SELECT c.cust_id, c.credit_limit, cr.rating
+FROM customers c
+INNER JOIN credit_ratings cr
+WHERE c.credit_limit > cr.low_limit AND c.credit_limit < cr.high_limit
+LIMIT 10
+--------------
+
++---------+--------------+-----------+
+| cust_id | credit_limit | rating    |
++---------+--------------+-----------+
+|  400300 |         6000 | Excellent |
+|  400801 |          750 | Standard  |
+|  401250 |          750 | Standard  |
+|  401890 |         1750 | Good      |
+|  402100 |          750 | Standard  |
+|  402110 |          750 | Standard  |
+|  402120 |          750 | Standard  |
+|  403000 |         6000 | Excellent |
+|  403010 |         6000 | Excellent |
+|  403050 |         6000 | Excellent |
++---------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Question 9
+Display both ordered and un-ordered products. Display product ID, product description, 
+and order ID in the category ‘MUS’
+*/
+
+SELECT p.prod_id, p.prod_desc, p.catg_id, od.ord_id
+FROM products p
+INNER JOIN order_details od
+ON od.prod_id = p.prod_id
+WHERE p.catg_id = 'MUS'
+--------------
+
++---------+-----------------------------------+---------+--------+
+| prod_id | prod_desc                         | catg_id | ord_id |
++---------+-----------------------------------+---------+--------+
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    218 |
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    413 |
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    518 |
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    525 |
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    552 |
+|    2014 | Bix Beiderbecke - Tiger Rag       | MUS     |    715 |
+|    2412 | David Newman - Davey Blue         | MUS     |    225 |
+|    2412 | David Newman - Davey Blue         | MUS     |    525 |
+|    2746 | Charles Mingus - Blues & Politics | MUS     |    218 |
+|    2746 | Charles Mingus - Blues & Politics | MUS     |    525 |
+|    2747 | Charles Mingus - Blues & Roots    | MUS     |    520 |
+|    2947 | Ornette Coleman - Sound Grammer   | MUS     |    225 |
+|    2947 | Ornette Coleman - Sound Grammer   | MUS     |    525 |
+|    2984 | John Coltrane - Lush Life         | MUS     |    413 |
+|    2984 | John Coltrane - Lush Life         | MUS     |    518 |
+|    2984 | John Coltrane - Lush Life         | MUS     |    552 |
+|    2984 | John Coltrane - Lush Life         | MUS     |    715 |
++---------+-----------------------------------+---------+--------+
+17 rows in set (0.00 sec)
+
+--------------
+/* Question 10
+Display customers with and without orders. Display customer ID, last name, and order ID.
+We get customers with orders. If the customer has several orders, 
+that customer gets multiple lines in the result set.
+We also get rows for the two customers in this cust_id range who have no orders and 
+the column for their order ID value is null—these customers each get one row. 
+*/
+
+SELECT c.cust_id, c.last_name, o.ord_id
+FROM customers c
+LEFT JOIN orders o
+ON c.cust_id = o.cust_id
+--------------
+
++---------+------------+--------+
+| cust_id | last_name  | ord_id |
++---------+------------+--------+
+|  400300 | McGold     |    378 |
+|  400801 | Washington |   NULL |
+|  401250 | Morse      |    106 |
+|  401250 | Morse      |    113 |
+|  401250 | Morse      |    119 |
+|  401250 | Morse      |    301 |
+|  401250 | Morse      |    506 |
+|  401250 | Morse      |    552 |
+|  401890 | Northrep   |    112 |
+|  401890 | Northrep   |    519 |
+|  402100 | Morise     |    114 |
+|  402100 | Morise     |    115 |
+|  402100 | Morise     |    117 |
+|  402110 | Coltrane   |   NULL |
+|  402120 | McCoy      |   NULL |
+|  402500 | Jones      |   NULL |
+|  403000 | Williams   |    105 |
+|  403000 | Williams   |    108 |
+|  403000 | Williams   |    109 |
+|  403000 | Williams   |    111 |
+|  403000 | Williams   |    390 |
+|  403000 | Williams   |    395 |
+|  403000 | Williams   |    412 |
+|  403000 | Williams   |    505 |
+|  403000 | Williams   |    508 |
+|  403000 | Williams   |    509 |
+|  403000 | Williams   |    511 |
+|  403000 | Williams   |    528 |
+|  403000 | Williams   |    529 |
+|  403000 | Williams   |    536 |
+|  403000 | Williams   |    608 |
+|  403000 | Williams   |    611 |
+|  403000 | Williams   |    808 |
+|  403000 | Williams   |    811 |
+|  403010 | Otis       |    118 |
+|  403050 | Hamilton   |    107 |
+|  403050 | Hamilton   |    227 |
+|  403050 | Hamilton   |    507 |
+|  403050 | Hamilton   |    527 |
+|  403100 | Stevenson  |    400 |
+|  403100 | Stevenson  |    401 |
+|  403100 | Stevenson  |    402 |
+|  403100 | Stevenson  |    407 |
+|  403500 | Stevenson  |   NULL |
+|  403750 | O'Leary    |   NULL |
+|  403760 | O'Leary    |   NULL |
+|  404000 | Olmsted    |    302 |
+|  404100 | Button     |    303 |
+|  404100 | Button     |    503 |
+|  404100 | Button     |    504 |
+|  404100 | Button     |    605 |
+|  404100 | Button     |    805 |
+|  404150 | Dancer     |   NULL |
+|  404180 | Shay       |   NULL |
+|  404890 | Kelley     |   NULL |
+|  404900 | Williams   |    520 |
+|  404950 | Morris     |    110 |
+|  404950 | Morris     |    408 |
+|  404950 | Morris     |    411 |
+|  404950 | Morris     |    510 |
+|  404950 | Morris     |    535 |
+|  404950 | Morris     |    540 |
+|  405000 | Day        |    116 |
+|  408770 | Clay       |    405 |
+|  409010 | Morris     |   NULL |
+|  409020 | Max        |   NULL |
+|  409030 | Mazur      |    128 |
+|  409030 | Mazur      |    130 |
+|  409030 | Mazur      |    324 |
+|  409150 | Martin     |    122 |
+|  409150 | Martin     |    123 |
+|  409150 | Martin     |    218 |
+|  409150 | Martin     |    223 |
+|  409150 | Martin     |    413 |
+|  409150 | Martin     |    414 |
+|  409150 | Martin     |    415 |
+|  409150 | Martin     |    515 |
+|  409150 | Martin     |    516 |
+|  409150 | Martin     |    518 |
+|  409150 | Martin     |    522 |
+|  409150 | Martin     |    523 |
+|  409150 | Martin     |    715 |
+|  409150 | Martin     |    716 |
+|  409150 | Martin     |    718 |
+|  409160 | Martin     |    124 |
+|  409160 | Martin     |    125 |
+|  409160 | Martin     |    224 |
+|  409160 | Martin     |    225 |
+|  409160 | Martin     |    524 |
+|  409160 | Martin     |    525 |
+|  409160 | Martin     |    606 |
+|  409160 | Martin     |    607 |
+|  409160 | Martin     |    806 |
+|  409160 | Martin     |    807 |
+|  409190 | Prince     |    126 |
+|  900300 | McGold     |    307 |
+|  900300 | McGold     |    609 |
+|  900300 | McGold     |    809 |
+|  903000 | McGold     |    120 |
+|  903000 | McGold     |    121 |
+|  903000 | McGold     |    306 |
+|  903000 | McGold     |    312 |
+|  903000 | McGold     |    313 |
+|  903000 | McGold     |    550 |
+|  903000 | McGold     |    551 |
+|  903000 | McGold     |    610 |
+|  903000 | McGold     |    810 |
+|  915001 | Adams      |    127 |
+|  915001 | Adams      |    129 |
++---------+------------+--------+
+109 rows in set (0.00 sec)
+
+--------------
+/* Question 11
+For all products, write a SQL statement that lists the product ID, Product name, 
+and category description for each category.
+Order the rows by category ID and then by product ID.
+*/
+
+SELECT p.prod_id, p.prod_name, cat.catg_desc
+FROM products p
+JOIN categories cat
+USING (catg_id)
+ORDER BY p.catg_id, p.prod_id
+--------------
+
++---------+---------------------+----------------+
+| prod_id | prod_name           | catg_desc      |
++---------+---------------------+----------------+
+|    1120 | Washer              | APPLIANCES     |
+|    1125 | Dryer               | APPLIANCES     |
+|    1126 | WasherDryer         | APPLIANCES     |
+|    1130 | Mini Freezer        | APPLIANCES     |
+|    4569 | Mini Dryer          | APPLIANCES     |
+|    5000 | Fingerling Potatoes | GOURMET FOOD   |
+|    5001 | Ginger Preserve     | GOURMET FOOD   |
+|    5002 | Ball-Peen Hammer    | HARDWARE       |
+|    5004 | Dead Blow Hammer    | HARDWARE       |
+|    5005 | Shingler Hammer     | HARDWARE       |
+|    5008 | Claw Framing        | HARDWARE       |
+|    1000 | Hand Mixer          | HOUSEWARES     |
+|    1070 | Iron                | HOUSEWARES     |
+|    1071 | Iron                | HOUSEWARES     |
+|    1072 | Iron                | HOUSEWARES     |
+|    1080 | Cornpopper          | HOUSEWARES     |
+|    1090 | Gas grill           | HOUSEWARES     |
+|    1100 | Blender             | HOUSEWARES     |
+|    1110 | Pancake griddle     | HOUSEWARES     |
+|    1160 | Mixer Deluxe        | HOUSEWARES     |
+|    4575 | Electric can opener | HOUSEWARES     |
+|    2014 | B000005INR          | MUSIC          |
+|    2234 | B000002I7U          | MUSIC          |
+|    2337 | B000005H40          | MUSIC          |
+|    2412 | B00005UF3I          | MUSIC          |
+|    2487 | B004Y03N7E          | MUSIC          |
+|    2746 | B00000JWCM          | MUSIC          |
+|    2747 | B000002I4Q          | MUSIC          |
+|    2933 | B0006J2FLW          | MUSIC          |
+|    2947 | B000GFRE76          | MUSIC          |
+|    2984 | B000000Y7L          | MUSIC          |
+|    2987 | B000005HGK          | MUSIC          |
+|    1140 | Bird cage- simple   | PET SUPPLIES   |
+|    1141 | Bird cage- deluxe   | PET SUPPLIES   |
+|    1142 | Bird seed           | PET SUPPLIES   |
+|    1143 | Bird seed deluxe    | PET SUPPLIES   |
+|    1150 | Cat exerciser       | PET SUPPLIES   |
+|    1151 | Cat pillow          | PET SUPPLIES   |
+|    1152 | Cat pillow Leather  | PET SUPPLIES   |
+|    4567 | Deluxe Cat Tree     | PET SUPPLIES   |
+|    4568 | Deluxe Cat Bed      | PET SUPPLIES   |
+|    4576 | Cosmo cat nip       | PET SUPPLIES   |
+|    4577 | Cat leash           | PET SUPPLIES   |
+|    1010 | Weights             | SPORTING GOODS |
+|    1020 | Dartboard           | SPORTING GOODS |
+|    1030 | Basketball          | SPORTING GOODS |
+|    1040 | Treadmill           | SPORTING GOODS |
+|    1050 | Stationary bike     | SPORTING GOODS |
+|    1060 | Mountain bike       | SPORTING GOODS |
++---------+---------------------+----------------+
+49 rows in set (0.00 sec)
+
+--------------
+/* Question 12
+Display a list of all employees and, if applicable, their manager. 
+Very tricky e.manager_id or m.manager_id !!!
+*/
+
+SELECT 
+   e.first_name AS 'employee first', 
+   e.last_name AS 'employee last', 
+   m.first_name AS 'manager first', 
+   m.last_name AS 'manager last'
+FROM employees e
+LEFT JOIN employees m 
+ON (e.manager_id = m.emp_id)
+--------------
+
++----------------+----------------+---------------+--------------+
+| employee first | employee last  | manager first | manager last |
++----------------+----------------+---------------+--------------+
+| Steven         | King           | NULL          | NULL         |
+| Neena          | Kochhar        | Steven        | King         |
+| Lex            | De Haan        | Steven        | King         |
+| Alexander      | Hunold         | Lex           | De Haan      |
+| Bruce          | Ernst          | Alexander     | Hunold       |
+| Diana          | Lorentz        | Alexander     | Hunold       |
+| Kevin          | Mourgos        | Steven        | King         |
+| Trenna         | Rajs           | Kevin         | Mourgos      |
+| Curtis         | Davies         | Kevin         | Mourgos      |
+| Randall        | Matos          | Kevin         | Mourgos      |
+| Peter          | Vargas         | Kevin         | Mourgos      |
+| Eleni          | Zlotkey        | Steven        | King         |
+| Ellen          | Abel           | Eleni         | Zlotkey      |
+| Jonathon       | Taylor         | Eleni         | Zlotkey      |
+| Kimberely      | Grant          | Eleni         | Zlotkey      |
+| Jennifer       | Whalen         | Neena         | Kochhar      |
+| Michael        | Hartstein      | Steven        | King         |
+| Pat            | Fay            | Michael       | Hartstein    |
+| Shelley        | Higgins        | Neena         | Kochhar      |
+| William        | Gietz          | Shelley       | Higgins      |
+| Sophia         | Barbosa Souza  | Eleni         | Zlotkey      |
+| Diego          | Silva Pinto    | Eleni         | Zlotkey      |
+| Sarah          | Alves Rocha    | Eleni         | Zlotkey      |
+| Lucas          | Almeida Castro | Eleni         | Zlotkey      |
+| Nick           | Hooper         | Eleni         | Zlotkey      |
+| Donna          | Steiner        | Michael       | Hartstein    |
+| George         | Bell           | Kevin         | Mourgos      |
+| Lisa           | TAYLOR         | Michael       | Hartstein    |
+| Michael        | Stocks         | Michael       | Hartstein    |
+| Tiffany        | Heiden         | Kevin         | Mourgos      |
+| Chen           | Li             | Alexander     | Hunold       |
+| Alain          | Fontaine       | Alexander     | Hunold       |
+| Matthias       | Reinhard       | Shelley       | Higgins      |
+| Katia          | Hernandez      | Neena         | Kochhar      |
+| Guido          | Ricci          | Neena         | Kochhar      |
+| Mizuto         | Saikawa        | Neena         | Kochhar      |
+| Nabil          | Safwah         | Michael       | Hartstein    |
+| Jelena         | Duric          | Shelley       | Higgins      |
+| Jennifer       | Loermans       | Shelley       | Higgins      |
+| Alice          | Newton         | Michael       | Hartstein    |
++----------------+----------------+---------------+--------------+
+40 rows in set (0.00 sec)
