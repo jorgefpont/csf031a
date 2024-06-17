@@ -1,0 +1,974 @@
+mysql> SOURCE ~/jorge-files/Foothill-courses/csf031a/jorgepont_project_part1.sql;
+--------------
+/* Final project, part 1 
+Jorge Pont
+CS 31A, Winter 2024 */
+
+/*
+start mySQL, Linux:
+mysql -u root -p --force --comments -vvv (somehow in Linux I have to use root)
+*/
+
+/* Linux
+SOURCE ~/jorge-files/Foothill-courses/csf031a/jorgepont_project_part1.sql;
+SOURCE ~/jorge-files/Foothill-courses/csf031a/Insert_data_university_database.sql;
+*/
+
+/* Windows
+SOURCE C:/Users/jorge/classes/CSF031A/jorgepont_project_part1.sql;
+SOURCE C:/Users/jorge/classes/CSF031A/...
+*/
+
+DROP DATABASE IF EXISTS university
+--------------
+
+Query OK, 13 rows affected (0.05 sec)
+
+--------------
+CREATE DATABASE university
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+Database changed
+--------------
+-- remove any prior version of tables
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS academic_session
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS department
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS parent_info
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS student
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS course
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS faculty
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS exam_type
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+--------------
+DROP TABLE IF EXISTS exam
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS exam_result
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS student_attendance
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS student_course
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS faculty_course
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS faculty_login
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+--------------
+CREATE TABLE academic_session (
+	session_id INT, 
+	session_name VARCHAR(25) NOT NULL,
+	PRIMARY KEY (session_id),
+	UNIQUE (session_name))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE department (
+	dept_id INT, 
+	dept_name VARCHAR(25) NOT NULL, 
+	head VARCHAR(25),
+	PRIMARY KEY (dept_id),
+	UNIQUE (dept_name))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE parent_info (
+	parent_id INT, 
+	parent1_fn VARCHAR(25) NOT NULL, 
+	parent1_ln VARCHAR(25) NOT NULL, 
+	parent2_fn VARCHAR(25), 
+	parent2_ln VARCHAR(25),
+	PRIMARY KEY (parent_id))
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE TABLE student (
+	student_id INT, 
+	first_name VARCHAR(25) NOT NULL, 
+	last_name VARCHAR(25) NOT NULL, 
+	reg_year DATE NOT NULL, 
+	email VARCHAR(25) NOT NULL, 
+	parent_id INT NOT NULL,
+	PRIMARY KEY (student_id), 
+	FOREIGN KEY (parent_id) REFERENCES parent_info(parent_id),
+	UNIQUE (email))
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE TABLE course (
+	course_id INT, 
+	course_name VARCHAR(100) NOT NULL, 
+	session_id INT, 
+	dept_id INT, 
+	logon_id VARCHAR(25), 
+	password VARCHAR(25), 
+	building VARCHAR(25), 
+	room INT, 
+	date_time VARCHAR(12),
+	PRIMARY KEY (course_id),
+	FOREIGN KEY (session_id) REFERENCES academic_session(session_id),
+    FOREIGN KEY (dept_id) REFERENCES department(dept_id),
+	UNIQUE (course_name))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE exam (
+	exam_id INT, 
+	start_date DATE, 
+	exam_type VARCHAR(12),
+	course_id INT,
+	PRIMARY KEY (exam_id),
+	/*FOREIGN KEY (exam_type) REFERENCES exam_type(exam_type),*/
+    FOREIGN KEY (course_id) REFERENCES course(course_id))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE faculty (
+	faculty_id INT, 
+	first_name VARCHAR(25) NOT NULL, 
+	last_name VARCHAR(25) NOT NULL, 
+	faculty_email VARCHAR(25) NOT NULL, 
+	salary DECIMAL(8,2), 
+	insurance VARCHAR(25),
+	hourly_rate DECIMAL(6,2), 
+	dept_id INT NOT NULL,
+	PRIMARY KEY (faculty_id),
+	FOREIGN KEY (dept_id) REFERENCES department(dept_id),
+	UNIQUE (faculty_email))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE exam_type (
+	exam_type VARCHAR(12), 
+	name VARCHAR(25) NOT NULL, 
+	description VARCHAR(100),
+	PRIMARY KEY (exam_type))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE exam_result (
+	student_id INT, 
+	course_id INT, 
+	exam_id INT, 
+	exam_grade DECIMAL(4,1) NOT NULL,
+	PRIMARY KEY (student_id, course_id, exam_id))
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE TABLE student_attendance (
+	student_id INT, 
+	session_id INT, 
+	num_work_days INT NOT NULL, 
+	num_days_off INT NOT NULL, 
+	exam_eligibility CHAR(1) NOT NULL,
+	PRIMARY KEY (student_id, session_id))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE student_course (
+	student_id INT, 
+	course_id INT, 
+	grade CHAR(1) NOT NULL,
+	PRIMARY KEY (student_id, course_id))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE TABLE faculty_course (
+	faculty_id INT, 
+	course_id INT, 
+	contact_hrs INT NOT NULL,
+	PRIMARY KEY (faculty_id, course_id))
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE TABLE faculty_login (
+	faculty_id INT, 
+	login_date_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (faculty_id, login_date_time))
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SOURCE ~/jorge-files/Foothill-courses/csf031a/Insert_data_university_database.sql;
+--------------
+/* ****************************************************************************/
+/*	                                                				          */
+/*											                      */
+/*	    The university Database                     			              */
+/*											      */
+/*	                                            			                  */
+/* ****************************************************************************/
+
+/*  Insert data into the tables */
+
+USE university
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+INSERT INTO     academic_session VALUES (100, 'spring session')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     academic_session VALUES (200, 'fall session')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     academic_session VALUES (300, 'summer session')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     department VALUES(10, 'accounting', 'mark smith')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     department VALUES(20, 'biology', 'dave gold')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     department VALUES(30, 'computer science', 'linda brown')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     department VALUES(40, 'literature', 'anita taylor')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     parent_info VALUES(600,'neil', 'smith','doris', 'smith')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     parent_info VALUES(610,'william', 'ben','nita', 'ben')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     parent_info VALUES(620,'sean', 'taylor','rhea', 'taylor')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     parent_info VALUES(630,'dave', 'carmen','cathy', 'carmen')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     parent_info VALUES(640,'john', 'audry','jane', 'audry')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student VALUES(720, 'jack','smith', '2012-01-12','jsmith@school.edu', 600)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student VALUES(730, 'noah', 'audry', '2012-01-01','naudry@school.edu', 640)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student VALUES(740, 'rhonda','taylor', '2012-09-01','rtaylor@school.edu', 620)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student VALUES(750, 'robert','ben', '2012-03-01','rben@school.edu', 610)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO student VALUES(760, 'jeanne','ben', '2012-03-01','jben@school.edu', 610)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO  student VALUES(770, 'mills','carmen', '2013-04-01','mcarmen@school.edu', 630)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (190, 'principles of accounting', 100, 10,NULL,NULL,'building a','101','mwf 12-1')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (191, 'introduction to business law', 100, 10,NULL,NULL,'building b','201','thur 2-4')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (192, 'cost accounting', 100, 10,NULL,NULL,'building c','301','tues 5-7')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (193, 'strategic tax planning for business', 100, 10,'tax123','password',NULL,NULL,NULL)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (194, 'general biology', 200, 20,'bio123','password',NULL,NULL,NULL)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     course VALUES (195, 'cell biology', 200, 20,NULL,NULL,'building d','401','mwf 9-10')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     faculty VALUES (800, 'jill', 'miller','jmill@school.edu',10000,'health',NULL,20)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty VALUES (810, 'james', 'borg','jborg@school.edu',30000,'health,dental',NULL,10)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty VALUES (820, 'lynn', 'brown','lbrown@school.edu',NULL,NULL,50,30)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty VALUES (830, 'arthur', 'smith','asmith@school.edu',NULL,NULL,40,10)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty VALUES (840, 'sally', 'jones','sjones@school.edu',50000,'health,dental,vision',NULL,40)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     exam_type VALUES('mce','multiple choice exams','choose more than one answer')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     exam_type VALUES('tf','true and false exams','choose either true or false')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     exam_type VALUES('fib','fill in the blanks exams','type in the correct answer')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     exam_type VALUES('ess','essay exams','write paragraphs')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     exam_type VALUES('sa','short answer exams','write short answers')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam VALUES(500, '2013-09-12','mce',190)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO exam VALUES(510, '2013-09-15','sa', 191)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam VALUES(520, '2013-09-18','fib', 192)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam VALUES(530, '2014-03-21','ess', 193)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam VALUES(540, '2014-04-02','tf', 194)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(720,190,500,91)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(720,193,530,97)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(730,194,540,87)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO exam_result VALUES(730,193,530,85)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(740,190,500,60)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(750,191,510,97)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(750,192,520,78)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(760,192,520,75)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(760,191,510,60)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO exam_result VALUES(770,192,520,70)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     student_attendance VALUES( 720,100, 180, 21,'y')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     student_attendance VALUES( 730,200, 180, 11,'y')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     student_attendance VALUES( 740,300, 180, 12,'y')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     student_attendance VALUES( 750,100, 180, 14,'y')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     student_attendance VALUES( 760,200, 180, 15,'y')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO    student_attendance VALUES( 770,300, 180, 13,'y')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(720,190,'a')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO student_course VALUES(720,193,'a')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(730,194,'b')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(730,193,'b')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(740,190,'f')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(750,191,'a')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course  VALUES(750,192,'c')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course VALUES(760,191,'c')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course  VALUES(760,192,'f')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO student_course  VALUES(770,192,'c')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (800, 192,3)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (800, 193,4)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (800, 190,5)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (800, 191,3)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (810, 194,4)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_course VALUES (810, 195,5)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_login VALUES(800,DEFAULT)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_login VALUES(810, DEFAULT)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_login VALUES(840, DEFAULT)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_login VALUES(820, DEFAULT)
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+INSERT INTO     faculty_login VALUES(830, DEFAULT)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW tables;
+--------------
+SHOW tables
+--------------
+
++----------------------+
+| Tables_in_university |
++----------------------+
+| academic_session     |
+| course               |
+| department           |
+| exam                 |
+| exam_result          |
+| exam_type            |
+| faculty              |
+| faculty_course       |
+| faculty_login        |
+| parent_info          |
+| student              |
+| student_attendance   |
+| student_course       |
++----------------------+
+13 rows in set (0.00 sec)
+
+mysql> DESCRIBE academic_session;
+--------------
+DESCRIBE academic_session
+--------------
+
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| session_id   | int         | NO   | PRI | NULL    |       |
+| session_name | varchar(25) | NO   | UNI | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DESCRIBE department;
+--------------
+DESCRIBE department
+--------------
+
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_id   | int         | NO   | PRI | NULL    |       |
+| dept_name | varchar(25) | NO   | UNI | NULL    |       |
+| head      | varchar(25) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE parent_info;
+--------------
+DESCRIBE parent_info
+--------------
+
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| parent_id  | int         | NO   | PRI | NULL    |       |
+| parent1_fn | varchar(25) | NO   |     | NULL    |       |
+| parent1_ln | varchar(25) | NO   |     | NULL    |       |
+| parent2_fn | varchar(25) | YES  |     | NULL    |       |
+| parent2_ln | varchar(25) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DESCRIBE student;
+--------------
+DESCRIBE student
+--------------
+
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| student_id | int         | NO   | PRI | NULL    |       |
+| first_name | varchar(25) | NO   |     | NULL    |       |
+| last_name  | varchar(25) | NO   |     | NULL    |       |
+| reg_year   | date        | NO   |     | NULL    |       |
+| email      | varchar(25) | NO   | UNI | NULL    |       |
+| parent_id  | int         | NO   | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> DESCRIBE course;
+--------------
+DESCRIBE course
+--------------
+
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| course_id   | int          | NO   | PRI | NULL    |       |
+| course_name | varchar(100) | NO   | UNI | NULL    |       |
+| session_id  | int          | YES  | MUL | NULL    |       |
+| dept_id     | int          | YES  | MUL | NULL    |       |
+| logon_id    | varchar(25)  | YES  |     | NULL    |       |
+| password    | varchar(25)  | YES  |     | NULL    |       |
+| building    | varchar(25)  | YES  |     | NULL    |       |
+| room        | int          | YES  |     | NULL    |       |
+| date_time   | varchar(12)  | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> DESCRIBE faculty;
+--------------
+DESCRIBE faculty
+--------------
+
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| faculty_id    | int          | NO   | PRI | NULL    |       |
+| first_name    | varchar(25)  | NO   |     | NULL    |       |
+| last_name     | varchar(25)  | NO   |     | NULL    |       |
+| faculty_email | varchar(25)  | NO   | UNI | NULL    |       |
+| salary        | decimal(8,2) | YES  |     | NULL    |       |
+| insurance     | varchar(25)  | YES  |     | NULL    |       |
+| hourly_rate   | decimal(6,2) | YES  |     | NULL    |       |
+| dept_id       | int          | NO   | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESCRIBE exam_type;
+--------------
+DESCRIBE exam_type
+--------------
+
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| exam_type   | varchar(12)  | NO   | PRI | NULL    |       |
+| name        | varchar(25)  | NO   |     | NULL    |       |
+| description | varchar(100) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE exam;
+--------------
+DESCRIBE exam
+--------------
+
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| exam_id    | int         | NO   | PRI | NULL    |       |
+| start_date | date        | YES  |     | NULL    |       |
+| exam_type  | varchar(12) | YES  |     | NULL    |       |
+| course_id  | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE exam_result;
+--------------
+DESCRIBE exam_result
+--------------
+
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| student_id | int          | NO   | PRI | NULL    |       |
+| course_id  | int          | NO   | PRI | NULL    |       |
+| exam_id    | int          | NO   | PRI | NULL    |       |
+| exam_grade | decimal(4,1) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE student_attendance;
+--------------
+DESCRIBE student_attendance
+--------------
+
++------------------+---------+------+-----+---------+-------+
+| Field            | Type    | Null | Key | Default | Extra |
++------------------+---------+------+-----+---------+-------+
+| student_id       | int     | NO   | PRI | NULL    |       |
+| session_id       | int     | NO   | PRI | NULL    |       |
+| num_work_days    | int     | NO   |     | NULL    |       |
+| num_days_off     | int     | NO   |     | NULL    |       |
+| exam_eligibility | char(1) | NO   |     | NULL    |       |
++------------------+---------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> DESCRIBE student_course;
+--------------
+DESCRIBE student_course
+--------------
+
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| student_id | int     | NO   | PRI | NULL    |       |
+| course_id  | int     | NO   | PRI | NULL    |       |
+| grade      | char(1) | NO   |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE faculty_course;
+--------------
+DESCRIBE faculty_course
+--------------
+
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| faculty_id  | int  | NO   | PRI | NULL    |       |
+| course_id   | int  | NO   | PRI | NULL    |       |
+| contact_hrs | int  | NO   |     | NULL    |       |
++-------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE faculty_login;
+--------------
+DESCRIBE faculty_login
+--------------
+
++-----------------+----------+------+-----+-------------------+-------------------+
+| Field           | Type     | Null | Key | Default           | Extra             |
++-----------------+----------+------+-----+-------------------+-------------------+
+| faculty_id      | int      | NO   | PRI | NULL              |                   |
+| login_date_time | datetime | NO   | PRI | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-----------------+----------+------+-----+-------------------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> 
